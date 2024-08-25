@@ -9,9 +9,9 @@ document.addEventListener("DOMContentLoaded", function() {
         organizationField.disabled = true; // Disable the field to prevent further editing
     }
     if (organizationid) {
-        const organizationIdField = document.getElementById('organizationid');
-        organizationField.value = decodeURIComponent(organizationid);
-        organizationField.disabled = true; // Disable the field to prevent further editing
+        const organizationidField = document.getElementById('organizationid');
+        organizationidField.value = decodeURIComponent(organizationid);
+        organizationidField.disabled = true; // Disable the field to prevent further editing
     }
 
 
