@@ -3,7 +3,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const organization = urlParams.get('organization');
     
     if (organization) {
-        document.getElementById('organization').value = decodeURIComponent(organization);
+        const organizationField = document.getElementById('organization');
+        organizationField.value = decodeURIComponent(organization);
+        organizationField.disabled = true; // Disable the field to prevent further editing
     }
 
     // Set current date and time
