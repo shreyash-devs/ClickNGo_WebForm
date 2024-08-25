@@ -1,0 +1,60 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff; /* White background */
+    color: #7357a4; /* Text color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.form-container {
+    background-color: #ffffff; /* White background */
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+    border: 2px solid #7357a4; /* Purple border around the form container */
+}
+
+h1 {
+    color: #7357a4; /* Purple text color for the title */
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    color: #7357a4; /* Purple text color for labels */
+    text-align: left;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="time"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 10px;
+    border: 2px solid #7357a4; /* Purple border for input fields */
+    box-sizing: border-box;
+    background-color: #ffffff; /* White background for input fields */
+    color: #7357a4; /* Purple text color for input fields */
+}
+
+button {
+    background-color: #7357a4; /* Purple background for button */
+    color: #ffffff; /* White text color for button */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #5e4690; /* Slightly darker purple for button hover */
+}
