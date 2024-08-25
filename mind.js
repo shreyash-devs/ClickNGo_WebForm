@@ -1,12 +1,19 @@
 document.addEventListener("DOMContentLoaded", function() {
     const urlParams = new URLSearchParams(window.location.search);
     const organization = urlParams.get('organization');
+    const organizationid = urlParams.get('organizationid');
     
     if (organization) {
         const organizationField = document.getElementById('organization');
         organizationField.value = decodeURIComponent(organization);
         organizationField.disabled = true; // Disable the field to prevent further editing
     }
+    if (organizationid) {
+        const organizationIdField = document.getElementById('organizationid');
+        organizationField.value = decodeURIComponent(organizationid);
+        organizationField.disabled = true; // Disable the field to prevent further editing
+    }
+
 
     // Set current date and time
     const currentDate = new Date().toISOString().split('T')[0];
