@@ -12,32 +12,57 @@
         <form id="entryForm">
             <label for="organization">Organization Name:</label>
             <input type="text" id="organization" name="organization" required>
-                  
+
             <label for="organizationid">Organization Id:</label>
             <input type="text" id="organizationid" name="organizationid" required>
-            
+
+            <label for="organizationemail">Organization Email:</label>
+            <input type="email" id="organizationemail" name="organizationemail" required>
+
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
-            
+
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>
-            
+
             <label for="vehicle">Vehicle Number:</label>
             <input type="text" id="vehicle" name="vehicle" required>
-            
+
             <label for="date">Date:</label>
             <input type="date" id="date" name="date" required>
-            
+
             <label for="time">Time:</label>
             <input type="time" id="time" name="time" required>
-            
+
             <label for="purpose">Purpose of Visit:</label>
             <input type="text" id="purpose" name="purpose" required>
-            
+
             <button type="button" onclick="submitForm()">Submit</button>
         </form>
     </div>
 
+    <!-- Firebase Libraries -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+
+    <script type="text/javascript">
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBY1UYnE-FwyxGzsP0lIfPsKa_Jw-bCmRg",
+            authDomain: "clickngo-17114.firebaseapp.com",
+            projectId: "clickngo-17114",
+            storageBucket: "clickngo-17114.appspot.com",
+            messagingSenderId: "485139187289",
+            appId: "1:485139187289:web:e41187aca0210372959348",
+            measurementId: "G-Y9K4SYL9GS"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Initialize Firestore
+        const db = firebase.firestore();
+    </script>
     <script src="mind.js"></script>
 </body>
 </html>
