@@ -1,13 +1,36 @@
 document.addEventListener("DOMContentLoaded", function() {
     const urlParams = new URLSearchParams(window.location.search);
-    const organization = urlParams.get('organization');
     
+    // Get parameters from URL
+    const organization = urlParams.get('organization');
+    const organizationid = urlParams.get('organizationid');
+    const organizationemail = urlParams.get('organizationemail');
+
+    // Set organization field
     if (organization) {
         const organizationField = document.getElementById('organization');
         organizationField.value = decodeURIComponent(organization);
         organizationField.disabled = true; // Disable the field to prevent further editing
     } else {
         alert('No organization parameter found in URL.');
+    }
+
+    // Set organizationid field
+    if (organizationid) {
+        const organizationidField = document.getElementById('organizationid');
+        organizationidField.value = decodeURIComponent(organizationid);
+        organizationidField.disabled = true; // Disable the field to prevent further editing
+    } else {
+        alert('No organizationid parameter found in URL.');
+    }
+
+    // Set organizationemail field
+    if (organizationemail) {
+        const organizationemailField = document.getElementById('organizationemail');
+        organizationemailField.value = decodeURIComponent(organizationemail);
+        organizationemailField.disabled = true; // Disable the field to prevent further editing
+    } else {
+        alert('No organizationemail parameter found in URL.');
     }
 
     // Set current date and time
@@ -19,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // Function to get the next entry number
-async function getNextEntryNumber(organization) {
+async function getNextEntryNumber(organizationemail) {
     try {
         const dataCollectionRef = db.collection(`Organizations/${organizationemail}/DATA`);
         const dataCollectionSnapshot = await dataCollectionRef.get();
@@ -33,7 +56,7 @@ async function getNextEntryNumber(organization) {
 // Function to submit the form
 async function submitForm() {
     const organization = document.getElementById('organization').value;
-    const organizationemai = document.getElementById('organizationemail').value;
+    const organizationemail = document.getElementById('organizationemail').value;
     const email = document.getElementById('email').value;
     const name = document.getElementById('name').value;
     const vehicleNumber = document.getElementById('vehicle').value;
@@ -66,8 +89,9 @@ async function submitForm() {
         };
 
         // Add a new document in the "DATA" collection with entryNumber as the document ID
-        await db.collection(`Organizations/${organizationemail}/DATA`).doc().set(entryData);
+        await db.collection(`Organizations/${organizationemail}/DATA`).doc(String(entryNumber)).set(entryData);
          
+        // Add to user's history
         await db.collection(`Users/${email}/History`).doc().set(entryData);
 
         console.log("Document written with Entry No: ", entryNumber);
