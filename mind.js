@@ -89,12 +89,10 @@ async function submitForm() {
         };
 
         // Add a new document in the "DATA" collection with entryNumber as the document ID
-        await db.collection(`Organizations/${organizationemail}/DATA`).doc(String(entryNumber)).set(entryData);
+        await db.collection(`Organizations/${organizationemail}/DATA`).doc().set(entryData);
          
         // Add to user's history
         await db.collection(`Users/${email}/History`).doc().set(entryData);
-
-        console.log("Document written with Entry No: ", entryNumber);
 
         // Clear the input fields after submission
         document.getElementById("entryForm").reset();
