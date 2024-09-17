@@ -1,19 +1,14 @@
 document.addEventListener("DOMContentLoaded", function() {
     const urlParams = new URLSearchParams(window.location.search);
     const organization = urlParams.get('organization');
-    const organizationid = urlParams.get('organizationid');
     
     if (organization) {
         const organizationField = document.getElementById('organization');
         organizationField.value = decodeURIComponent(organization);
         organizationField.disabled = true; // Disable the field to prevent further editing
+    } else {
+        alert('No organization parameter found in URL.');
     }
-    if (organizationid) {
-        const organizationidField = document.getElementById('organizationid');
-        organizationidField.value = decodeURIComponent(organizationid);
-        organizationidField.disabled = true; // Disable the field to prevent further editing
-    }
-
 
     // Set current date and time
     const currentDate = new Date().toISOString().split('T')[0];
@@ -23,35 +18,63 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('time').value = currentTime;
 });
 
-function submitForm() {
-    const form = document.getElementById('entryForm');
-    const formData = {
-        organization: form.organization.value,
-        email: form.email.value,
-        name: form.name.value,
-        vehicle: form.vehicle.value,
-        date: form.date.value,
-        time: form.time.value,
-        purpose: form.purpose.value,
-    };
-
-    // Convert form data to string and save it to a text file
-    const dataString = JSON.stringify(formData);
-    download('entry_data.txt', dataString);
-
-    // Clear the input fields after submission
-    form.reset();
+// Function to get the next entry number
+async function getNextEntryNumber(organization) {
+    try {
+        const dataCollectionRef = db.collection(`Organizations/${organizationemail}/DATA`);
+        const dataCollectionSnapshot = await dataCollectionRef.get();
+        return dataCollectionSnapshot.size + 1; // Next entry number
+    } catch (error) {
+        console.error("Error getting entry number: ", error);
+        throw error;
+    }
 }
 
-function download(filename, text) {
-    const element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-    element.setAttribute('download', filename);
+// Function to submit the form
+async function submitForm() {
+    const organization = document.getElementById('organization').value;
+    const organizationemai = document.getElementById('organizationemail').value;
+    const email = document.getElementById('email').value;
+    const name = document.getElementById('name').value;
+    const vehicleNumber = document.getElementById('vehicle').value;
+    const date = document.getElementById('date').value;
+    const time = document.getElementById('time').value;
+    const purpose = document.getElementById('purpose').value;
 
-    element.style.display = 'none';
-    document.body.appendChild(element);
+    // Validate form fields
+    if (!organization || !organizationemail || !email || !name || !vehicleNumber || !date || !time || !purpose) {
+        alert("Please fill out all required fields.");
+        return;
+    }
 
-    element.click();
+    try {
+        // Get the next entry number
+        const entryNumber = await getNextEntryNumber(organizationemail);
 
-    document.body.removeChild(element);
+        // Format the datetime
+        const dateTime = `${date} ${time}`;
+
+        // Firestore document structure
+        const entryData = {
+            'Entry No': entryNumber,
+            'Name': name,
+            'VehicleNumber': vehicleNumber,
+            'Email': email,
+            'Organization': organization,
+            'Purpose': purpose,
+            'DateTime': dateTime
+        };
+
+        // Add a new document in the "DATA" collection with entryNumber as the document ID
+        await db.collection(`Organizations/${organizationemail}/DATA`).doc().set(entryData);
+         
+        await db.collection(`Users/${email}/History`).doc().set(entryData);
+
+        console.log("Document written with Entry No: ", entryNumber);
+
+        // Clear the input fields after submission
+        document.getElementById("entryForm").reset();
+    } catch (error) {
+        console.error("Error adding document: ", error);
+    }
 }
