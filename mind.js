@@ -35,11 +35,30 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Set current date and time
     const currentDate = new Date().toISOString().split('T')[0];
-    const currentTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    const currentTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' ,hour12: false});
 
     document.getElementById('date').value = currentDate;
     document.getElementById('time').value = currentTime;
-});
+    
+      // Modal handling
+      const modal = document.getElementById("successModal");
+      const closeModalBtn = document.getElementById("closeModalBtn");
+      const closeSpan = document.querySelector(".close");
+  
+      closeModalBtn.onclick = () => {
+          modal.style.display = "none";
+      };
+  
+      closeSpan.onclick = () => {
+          modal.style.display = "none";
+      };
+  
+      window.onclick = (event) => {
+          if (event.target === modal) {
+              modal.style.display = "none";
+          }
+      };
+  });
 
 // Function to get the next entry number
 async function getNextEntryNumber(organizationemail) {
@@ -65,7 +84,7 @@ async function submitForm() {
     const purpose = document.getElementById('purpose').value;
 
     // Validate form fields
-    if (!organization || !organizationemail || !email || !name || !vehicleNumber || !date || !time || !purpose) {
+    if (!organization || !organizationemail || !name  || !date || !time || !purpose) {
         alert("Please fill out all required fields.");
         return;
     }
@@ -74,18 +93,21 @@ async function submitForm() {
         // Get the next entry number
         const entryNumber = await getNextEntryNumber(organizationemail);
 
-        // Format the datetime
-        const dateTime = `${date} ${time}`;
+        // Append ":00" for seconds
+         const formattedTime = `${time}:00`;
+
+        // Combine date and formatted time to get YYYY-MM-DD HH:MM:SS
+        const formattedDateTime = `${date} ${formattedTime}`;
 
         // Firestore document structure
         const entryData = {
-            'Entry No': entryNumber,
+            'EntryNo': entryNumber,
             'Name': name,
             'VehicleNumber': vehicleNumber,
             'Email': email,
             'Organization': organization,
             'Purpose': purpose,
-            'DateTime': dateTime
+            'DateTime': formattedDateTime,
         };
 
         // Add a new document in the "DATA" collection with entryNumber as the document ID
@@ -93,6 +115,9 @@ async function submitForm() {
          
         // Add to user's history
         await db.collection(`Users/${email}/History`).doc().set(entryData);
+
+         // Show success modal
+         document.getElementById("successModal").style.display = "flex";
 
         // Clear the input fields after submission
         document.getElementById("entryForm").reset();
