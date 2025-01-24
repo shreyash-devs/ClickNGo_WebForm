@@ -74,6 +74,10 @@ async function getNextEntryNumber(organizationemail) {
 
 // Function to submit the form
 async function submitForm() {
+    const submitButton = document.getElementById('submitButton'); // Get the submit button element
+    submitButton.disabled = true; // Disable the button
+    submitButton.style.opacity = "0.6"; // Optional: Reduce opacity to indicate it's disabled
+
     const organization = document.getElementById('organization').value;
     const organizationemail = document.getElementById('organizationemail').value;
     const email = document.getElementById('email').value;
@@ -84,8 +88,10 @@ async function submitForm() {
     const purpose = document.getElementById('purpose').value;
 
     // Validate form fields
-    if (!organization || !organizationemail || !name  || !date || !time || !purpose) {
+    if (!organization || !organizationemail || !name || !date || !time || !purpose) {
         alert("Please fill out all required fields.");
+        submitButton.disabled = false; // Re-enable the button
+        submitButton.style.opacity = "1"; // Restore opacity
         return;
     }
 
@@ -94,7 +100,7 @@ async function submitForm() {
         const entryNumber = await getNextEntryNumber(organizationemail);
 
         // Append ":00" for seconds
-         const formattedTime = `${time}:00`;
+        const formattedTime = `${time}:00`;
 
         // Combine date and formatted time to get YYYY-MM-DD HH:MM:SS
         const formattedDateTime = `${date} ${formattedTime}`;
@@ -112,16 +118,22 @@ async function submitForm() {
 
         // Add a new document in the "DATA" collection with entryNumber as the document ID
         await db.collection(`Organizations/${organizationemail}/DATA`).doc().set(entryData);
-         
+
         // Add to user's history
         await db.collection(`Users/${email}/History`).doc().set(entryData);
 
-         // Show success modal
-         document.getElementById("successModal").style.display = "flex";
+        // Show success modal
+        document.getElementById("successModal").style.display = "flex";
 
         // Clear the input fields after submission
         document.getElementById("entryForm").reset();
     } catch (error) {
         console.error("Error adding document: ", error);
     }
+
+    // Re-enable the submit button after 5 seconds
+    setTimeout(() => {
+        submitButton.disabled = false;
+        submitButton.style.opacity = "1"; // Restore opacity
+    }, 5000);
 }
