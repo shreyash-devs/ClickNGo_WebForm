@@ -125,6 +125,10 @@ async function submitForm() {
         // Show success modal
         document.getElementById("successModal").style.display = "flex";
 
+        // Enable the button after success dialog is shown
+        submitBtn.disabled = false; 
+
+
         // Clear the input fields after submission
         document.getElementById("entryForm").reset();
     } catch (error) {
