@@ -31,9 +31,9 @@ ClicknGo's entry form allows visitors to quickly and securely register their det
 
 ---
 
-## ❤️ Author
+## 👨‍💻 Author
 
-Made with 💙 and passion by **Shreyash Dubewar**  
+Made with 💙 and passion by **Shreyash-devs**  
 Intern at Sumago Infotech Pvt. Ltd. | Flutter & Web Developer | Always learning and building cool things! 🚀  
 
 Connect with me on [LinkedIn](https://www.linkedin.com/in/shreyashdubewar) | [GitHub](https://github.com/shreyash-devs)  
